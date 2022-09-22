@@ -14,3 +14,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "TopTracer Case"
 include ':app'
+include ':network'
+include ':ui'
+include ':session'
+include ':feature:welcome'
+include ':feature:login'

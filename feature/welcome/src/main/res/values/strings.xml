@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="logout_button">Logout</string>
+    <string name="welcome_greeting">Welcome, %s!</string>
+    <string name="welcome_gif_title">\"%1$s\" by %2$s</string>
+</resources>

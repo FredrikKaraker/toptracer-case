@@ -11,8 +11,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import com.example.toptracercase.navigation.TopTracerNavigation
-import com.example.toptracercase.ui.theme.TopTracerCaseTheme
+import com.example.ui.TopTracerCaseTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
