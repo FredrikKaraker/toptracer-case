@@ -12,7 +12,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
-    navigateToGif: () -> Unit
+    navigateToWelcome: () -> Unit
 ) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
@@ -22,6 +22,7 @@ fun LoginScreen(
         onPasswordChanged = viewModel::onPasswordChanged,
         onLoginClicked = viewModel::onLogin,
         onForgotPasswordClicked = {},
-        navigateToGif = navigateToGif
+        navigateToWelcome = navigateToWelcome,
+        consumeLoginEvent = viewModel::consumeLoginEvent
     )
 }

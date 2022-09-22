@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val sessionRepository: SessionRepository
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow(LoginViewState.EMPTY)
@@ -18,11 +18,11 @@ class LoginViewModel @Inject constructor(
     fun onLogin() {
         viewModelScope.launch {
             viewState.value.let { viewState ->
-                loginRepository.login(viewState.username, viewState.password)
+                sessionRepository.login(viewState.username, viewState.password)
                     .onSuccess { emitLoginEvent(LoginEvent.Success) }
                     .onFailure { error ->
                         val event = when (error) {
-                            is LoginFailure.NoUsername -> LoginEvent.NoUserName
+                            is LoginFailure.NoUsername -> LoginEvent.NoUsername
                             is LoginFailure.WrongPassword -> LoginEvent.WrongPassword
                             else -> LoginEvent.UnspecifiedError
                         }
@@ -40,6 +40,10 @@ class LoginViewModel @Inject constructor(
         _viewState.value = _viewState.value.copy(password = password)
     }
 
+    fun consumeLoginEvent() {
+        _viewState.value = _viewState.value.copy(loginEvent = LoginEvent.None)
+    }
+
     private fun emitLoginEvent(event: LoginEvent) {
         _viewState.value = _viewState.value.copy(loginEvent = event)
     }
@@ -53,7 +57,7 @@ data class LoginViewState(val username: String, val password: String, val loginE
 
 enum class LoginEvent {
     None,
-    NoUserName,
+    NoUsername,
     WrongPassword,
     Success,
     UnspecifiedError

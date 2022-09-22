@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TopTracer Case</string>
+    <string name="login_error_title">Oops!</string>
+    <string name="login_error_username">It looks like you forgot to provide a username.</string>
+    <string name="login_error_password">The password you provided doesn\'t match our records.</string>
+    <string name="error_generic">Something went wrong...</string>
+    <string name="login_button">Login</string>
+    <string name="ok_button">OK</string>
+    <string name="forgot_password_button">Forgot Password</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="welcome_greeting">Welcome, %s!</string>
 </resources>
