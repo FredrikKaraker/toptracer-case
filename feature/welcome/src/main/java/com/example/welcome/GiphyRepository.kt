@@ -7,6 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val FALLBACK_USERNAME = "Unknown"
+private const val FALLBACK_TITLE = "Untitled"
 private const val BY_DELIMITER = " by "
 
 @Singleton
@@ -22,7 +23,7 @@ class GiphyRepository @Inject constructor(
 
 private fun GiphyResponse.toGiphy() = with(data) {
     Giphy(
-        title = title.cleanTitle(),
+        title = title.cleanTitle().ifBlank { FALLBACK_TITLE },
         username = user?.displayName ?: FALLBACK_USERNAME,
         url = images.image.url
     )
