@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -23,21 +22,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             TopTracerCaseTheme {
                 val systemUiController = rememberSystemUiController()
+                val isLight = MaterialTheme.colors.isLight
                 SideEffect {
-                    systemUiController.setStatusBarColor(
-                        color = Color.Transparent
-                    )
-                    systemUiController.setNavigationBarColor(
-                        color = Color.Transparent
+                    systemUiController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = isLight
                     )
                 }
-                Scaffold {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colors.background
-                    ) {
-                        TopTracerNavigation()
-                    }
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    TopTracerNavigation()
                 }
             }
         }

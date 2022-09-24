@@ -28,11 +28,12 @@ fun TopTracerNavigation(
             )
         }
         composable(Screen.Welcome.route) {
-            WelcomeScreen(onLogout = {
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Welcome.route) { inclusive = true }
+            WelcomeScreen(
+                navigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Welcome.route) { inclusive = true }
+                    }
                 }
-            }
             )
         }
     }

@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.ui.Paddings
 
 @Composable
 fun Welcome(
@@ -37,7 +38,7 @@ fun Welcome(
 ) {
     Column(
         modifier = Modifier
-            .padding(com.example.ui.Paddings.large)
+            .padding(Paddings.large)
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
             .statusBarsPadding()
@@ -47,11 +48,12 @@ fun Welcome(
     ) {
         Text(
             text = stringResource(R.string.welcome_greeting, viewState.username.orEmpty()),
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(com.example.ui.Paddings.large))
-        Giphy(giphyResult = viewState.giphy)
-        Spacer(modifier = Modifier.height(com.example.ui.Paddings.medium))
+        Spacer(modifier = Modifier.height(Paddings.large))
+        GiphySection(giphyResult = viewState.giphy)
+        Spacer(modifier = Modifier.height(Paddings.medium))
         TextButton(onClick = onLogout) {
             Text(stringResource(R.string.logout_button))
         }
@@ -59,7 +61,7 @@ fun Welcome(
 }
 
 @Composable
-private fun Giphy(giphyResult: GiphyResult) {
+private fun GiphySection(giphyResult: GiphyResult) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -69,7 +71,7 @@ private fun Giphy(giphyResult: GiphyResult) {
             is GiphyResult.Success -> {
                 val title = giphyResult.giphy.title
                 val username = giphyResult.giphy.username
-                Spacer(modifier = Modifier.height(com.example.ui.Paddings.large))
+                Spacer(modifier = Modifier.height(Paddings.large))
                 Text(
                     text = stringResource(R.string.welcome_gif_title, title, username),
                     textAlign = TextAlign.Center
@@ -83,7 +85,10 @@ private fun Giphy(giphyResult: GiphyResult) {
 @Composable
 private fun Gif(giphyResult: GiphyResult) {
     var isLoading by remember { mutableStateOf(true) }
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.heightIn(min = 100.dp)) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.heightIn(min = 100.dp)
+    ) {
         if (giphyResult is GiphyResult.Success) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)

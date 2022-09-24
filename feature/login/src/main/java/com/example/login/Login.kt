@@ -1,5 +1,6 @@
 package com.example.login
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.ui.Paddings
 import com.example.ui.ThemePreviews
@@ -65,34 +67,22 @@ fun Login(
             verticalArrangement = Arrangement.Center
         ) {
             val focusManager = LocalFocusManager.current
-            OutlinedTextField(
-                modifier = Modifier
-                    .widthIn(max = 500.dp)
-                    .fillMaxWidth(),
+            LoginTextField(
                 value = viewState.username,
                 onValueChange = onUsernameChanged,
-                label = { Text(stringResource(R.string.username_label)) },
-                singleLine = true,
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
+                labelRes = R.string.username_label,
+                onDone = {
+                    focusManager.moveFocus(FocusDirection.Down)
+                }
             )
-            OutlinedTextField(
-                modifier = Modifier
-                    .widthIn(max = 500.dp)
-                    .fillMaxWidth(),
+            LoginTextField(
                 value = viewState.password,
                 onValueChange = onPasswordChanged,
                 visualTransformation = PasswordVisualTransformation(),
-                label = { Text(stringResource(R.string.password_label)) },
-                singleLine = true,
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        onLoginClicked()
-                    }
-                )
+                labelRes = R.string.password_label,
+                onDone = {
+                    onLoginClicked()
+                }
             )
             Row(
                 modifier = Modifier
@@ -133,6 +123,30 @@ fun Login(
     alertMessage?.let {
         LoginDialog(message = stringResource(it), onDismiss = { consumeLoginEvent() })
     }
+}
+
+@Composable
+private fun LoginTextField(
+    value: String,
+    @StringRes labelRes: Int,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    onValueChange: (String) -> Unit,
+    onDone: () -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .widthIn(max = 500.dp)
+            .fillMaxWidth(),
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(stringResource(labelRes)) },
+        maxLines = 1,
+        singleLine = true,
+        visualTransformation = visualTransformation,
+        keyboardActions = KeyboardActions(
+            onDone = { onDone() }
+        )
+    )
 }
 
 @Composable

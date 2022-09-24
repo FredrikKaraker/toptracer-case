@@ -1,12 +1,11 @@
 package com.example.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.session.LoginFailure
 import com.example.session.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,36 +17,34 @@ class LoginViewModel @Inject constructor(
     val viewState = _viewState
 
     fun onLogin() {
-        viewModelScope.launch {
-            viewState.value.let { viewState ->
-                sessionRepository.login(viewState.username, viewState.password)
-                    .onSuccess { emitLoginEvent(LoginEvent.Success) }
-                    .onFailure { error ->
-                        val event = when (error) {
-                            is LoginFailure.NoUsername -> LoginEvent.NoUsername
-                            is LoginFailure.WrongPassword -> LoginEvent.WrongPassword
-                            else -> LoginEvent.UnspecifiedError
-                        }
-                        emitLoginEvent(event)
+        viewState.value.let { viewState ->
+            sessionRepository.login(viewState.username, viewState.password)
+                .onSuccess { emitLoginEvent(LoginEvent.Success) }
+                .onFailure { error ->
+                    val event = when (error) {
+                        is LoginFailure.NoUsername -> LoginEvent.NoUsername
+                        is LoginFailure.WrongPassword -> LoginEvent.WrongPassword
+                        else -> LoginEvent.UnspecifiedError
                     }
-            }
+                    emitLoginEvent(event)
+                }
         }
     }
 
     fun onUsernameChanged(username: String) {
-        _viewState.value = _viewState.value.copy(username = username)
+        _viewState.update { it.copy(username = username) }
     }
 
     fun onPasswordChanged(password: String) {
-        _viewState.value = _viewState.value.copy(password = password)
+        _viewState.update { it.copy(password = password) }
     }
 
     fun consumeLoginEvent() {
-        _viewState.value = _viewState.value.copy(loginEvent = LoginEvent.None)
+        _viewState.update { it.copy(loginEvent = LoginEvent.None) }
     }
 
     private fun emitLoginEvent(event: LoginEvent) {
-        _viewState.value = _viewState.value.copy(loginEvent = event)
+        _viewState.update { it.copy(loginEvent = event) }
     }
 }
 

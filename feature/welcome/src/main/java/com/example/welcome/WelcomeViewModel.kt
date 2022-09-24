@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.session.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,17 +27,21 @@ class WelcomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             giphyRepository.getRandomGiphy()
-                .onSuccess {
-                    _viewState.value = _viewState.value.copy(giphy = GiphyResult.Success(it))
+                .onSuccess { result ->
+                    emitResult(GiphyResult.Success(result))
                 }
                 .onFailure {
-                    _viewState.value = _viewState.value.copy(giphy = GiphyResult.Error)
+                    emitResult(GiphyResult.Error)
                 }
         }
     }
 
     fun logout() {
         sessionRepository.logout()
+    }
+
+    private fun emitResult(result: GiphyResult) {
+        _viewState.update { it.copy(giphy = result) }
     }
 }
 

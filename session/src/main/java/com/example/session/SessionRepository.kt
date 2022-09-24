@@ -1,6 +1,7 @@
 package com.example.session
 
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,11 +21,11 @@ class SessionRepository @Inject constructor() {
         }
 
     fun logout() {
-        _currentUser.value = null
+        _currentUser.update { null }
     }
 
     private fun setCurrentUser(username: String) {
-        _currentUser.value = LoggedInUser(username)
+        _currentUser.update { LoggedInUser(username) }
     }
 }
 

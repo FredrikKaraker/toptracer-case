@@ -10,18 +10,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun WelcomeScreen(
     viewModel: WelcomeViewModel = hiltViewModel(),
-    onLogout: () -> Unit
+    navigateToLogin: () -> Unit
 ) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-
-    if (viewState.username == null) {
-        onLogout()
-    }
     Welcome(
         viewState = viewState,
         onLogout = {
             viewModel.logout()
-            onLogout()
+            navigateToLogin()
         }
     )
 }
